@@ -593,7 +593,7 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="gap-1">
-          <DrawerTitle>Visualização da pessoa</DrawerTitle>
+          <DrawerTitle>Visualização do animal</DrawerTitle>
           <DrawerDescription>
             Visualizando dados de {item.name}
           </DrawerDescription>
@@ -615,7 +615,7 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
               </div>
               <div className="flex flex-col gap-3">
                 <Label htmlFor="status">Status</Label>
-                <Input id="status" disabled defaultValue={item.status} />
+                <Input id="status" disabled defaultValue={animalStatusTranslate(item.status)} />
               </div>
             </div>
           </form>

@@ -2,11 +2,13 @@
 
 import * as React from "react";
 import Image from "next/image";
+import { Breed } from "@prisma/client";
 import { toast } from "sonner";
 import { z } from "zod";
 import { CSS } from "@dnd-kit/utilities";
 import { useMutation } from "@tanstack/react-query";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { translateBreedToPtBr } from"@/helper/formatter";
 import {
   closestCenter,
   DndContext,
@@ -105,8 +107,8 @@ export const schema = z.object({
     id: z.string(),
     name: z.string(),
     description: z.string().optional(),
-    species: z.string(),
-    breedId: z.string(),
+    species: z.enum(['DOG', 'CAT', 'OTHER']),
+    breed: z.nativeEnum(Breed),
     gender: z.enum(['MALE', 'FEMALE', 'UNSET']),
     imageUrl: z.string(),
     status: z.enum(['NEW_ARRIVAL', 'ADOPTABLE', 'TREATMENT', 'UNSET']),
@@ -202,6 +204,18 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     cell: ({ row }) => {
       return <p>{row.original.description}</p>
     },
+  },
+  {
+    accessorKey: "breed",
+    header: "Raça",
+    enableColumnFilter: true,
+    cell: ({ row }) => (
+      <div className="w-32">
+        <Badge variant="outline" className="text-muted-foreground px-1.5">
+          {translateBreedToPtBr(row.original.breed)}
+        </Badge>
+      </div>
+    ),
   },
   {
     accessorKey: "createdAt",
@@ -582,7 +596,7 @@ export function DataTable({
 }
 
 function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
 
   return (
     <Drawer direction={isMobile ? "bottom" : "right"}>

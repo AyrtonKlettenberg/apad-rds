@@ -167,7 +167,7 @@ const [open, setOpen] = React.useState(false);
             <div className="space-y-2">
               <Label htmlFor="startAt" className="flex items-center gap-2">
                 <CalendarDays className="w-4 h-4" />
-                Data de Encerramento
+                Data de início
               </Label>
               <Input
                 type="date"
